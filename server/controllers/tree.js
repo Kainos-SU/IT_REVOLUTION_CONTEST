@@ -30,7 +30,23 @@ module.exports.create = async function (req, res) {
   console.log(req.file);
   console.log(req.body);
   try {
-    // const newTree = new Tree({});
+    const newTree = new Tree({
+      imgSrc: "",
+      treeSpecies: req.body.treeSpecies, //
+      addres: req.body.addres, //
+      coordinates: req.body.coordinates, //
+      leafShape: req.body.leafShape, //
+      registerNumber: req.body.registerNumber, //
+      trunkDiameter: req.body.trunkDiameter, //
+      crownRadius: req.body.crownRadius, //
+      age: req.body.age, //
+      state: req.body.state, //
+      frequencyWatering: req.body.frequencyWatering, //
+      lastWatering: req.body.lastWatering, //
+      listVaccination: req.body.listVaccination, //
+    });
+    console.log(newTree);
+    res.status(201).json({ message: "Успішно збережено." });
   } catch (error) {
     console.log(error);
     res
