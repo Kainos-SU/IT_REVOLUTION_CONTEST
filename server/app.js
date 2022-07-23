@@ -4,7 +4,7 @@ const pasport = require("passport");
 const bodyParser = require("body-parser");
 // Router START
 const authRoutes = require("./routes/auth");
-const userlistRoutes = require("./routes/userlist");
+const treeRoutes = require("./routes/tree");
 // Router END
 // Swagger START
 const swaggerUI = require("swagger-ui-express");
@@ -46,7 +46,7 @@ require("./middleware/passport")(pasport);
 
 app.use(require("morgan")("dev"));
 
-// app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(require("cors")());
@@ -55,6 +55,6 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs)); // link to swagge
 
 // Router function
 app.use("/api/auth", authRoutes);
-app.use("/api/userlist", userlistRoutes);
+app.use("/api/tree", treeRoutes);
 
 module.exports = app;

@@ -10,6 +10,7 @@ router.post("/register", controller.register);
 router.post(
   "/logout",
   pasport.authenticate("jwt", { session: false }),
+
   controller.logout
 ); // Delete in DB token
 

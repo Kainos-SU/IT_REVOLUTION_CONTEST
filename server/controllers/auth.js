@@ -6,7 +6,7 @@ const Token = require("../models/Token"); // Model Token
 const keys = require("../config/keys"); // Secret key
 
 module.exports.login = async function (req, res) {
-  console.log("Сервер login");
+  console.log("Server login");
   try {
     const candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
@@ -52,7 +52,7 @@ module.exports.login = async function (req, res) {
 };
 
 module.exports.register = async function (req, res) {
-  console.log("Сервер register");
+  console.log("Server register");
   const candidate = await User.findOne({ email: req.body.email });
   if (candidate) {
     res.status(409).json({
@@ -65,7 +65,7 @@ module.exports.register = async function (req, res) {
       email: req.body.email,
       password: bcrypt.hashSync(password, salt),
       name: req.body.name,
-      admin: false,
+      role: 0,
     });
     try {
       await user.save();
@@ -81,7 +81,7 @@ module.exports.register = async function (req, res) {
 
 module.exports.logout = async function (req, res) {
   try {
-    console.log("Сервер logout");
+    console.log("Server logout");
     const candidateDelToken = req.body.token;
     const token = await Token.find({ _id_user: req.body._id }); // Списко токенів користувача який хоче вийти з кабінету.
 
