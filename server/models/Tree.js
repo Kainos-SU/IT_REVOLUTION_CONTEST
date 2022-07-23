@@ -14,17 +14,13 @@ const treeSchema = new Schema({
     type: String,
     required: true,
   },
-  coordinates: {
-    type: Object,
+  coordinatesX: {
+    type: Number,
     required: true,
-    x: {
-      type: Number,
-      required: true,
-    },
-    y: {
-      type: Number,
-      required: true,
-    },
+  },
+  coordinatesY: {
+    type: Number,
+    required: true,
   },
   leafShape: {
     type: String,
