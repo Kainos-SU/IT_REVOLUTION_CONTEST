@@ -14,12 +14,12 @@ module.exports.location = async function (req, res) {
     console.log(49.234851, "X", 28.458206, "Y");
     console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
 
-    // $eq (равно)
-    // $ne (не равно)
-    // $gt (больше чем)
-    // $lt (меньше чем)
-    // $gte (больше или равно)
-    // $lte (меньше или равно)
+    // $eq (дорівнює)
+    // $ne (не дорівнює)
+    // $gt (більше за)
+    // $lt (меньше за)
+    // $gte (більше або рівне)
+    // $lte (меньше або рівне)
 
     const candidateDB = await Tree.find({
       coordinatesX: { $lt: ltx, $gt: rbx }, // localhost
@@ -63,7 +63,7 @@ module.exports.infotree = async function (req, res) {
 
 module.exports.create = async function (req, res) {
   console.log("Server create");
-  console.log(req.body._id);
+  // console.log(req.body._id);
   try {
     const treeType = Number(req.body.treeType);
     const coordinates = req.body.coordinates.split(",");
@@ -116,6 +116,27 @@ module.exports.updating = async function (req, res) {
 
 module.exports.delete = async function (req, res) {
   try {
+    console.log(req.body._id);
+
+    const user = await User.findById(req.body._id);
+    console.log(user);
+
+    if (user) {
+      console.log("перший if");
+      if (user.role >= 2) {
+        console.log("другий if");
+        Tree.findByIdAndDelete(req.body._id);
+        res.status(200).json({ message: "Видалено успішно" });
+      } else if (user < 1) {
+        res.status(403).json({
+          message: "У вас не достатньо прав для видалення інформації.",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "Для виконання цієї дії потрібно бути авторизованим.",
+      });
+    }
   } catch (error) {
     console.log(error);
     res
