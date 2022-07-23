@@ -6,7 +6,7 @@ const treeSchema = new Schema({
     type: String,
     required: true,
   },
-  treeSpecies: {
+  treeType: {
     type: String,
     required: true,
   },
@@ -17,19 +17,11 @@ const treeSchema = new Schema({
   coordinates: {
     type: Object,
     required: true,
-    ltx: {
+    x: {
       type: Number,
       required: true,
     },
-    lty: {
-      type: Number,
-      required: true,
-    },
-    rbx: {
-      type: Number,
-      required: true,
-    },
-    rby: {
+    y: {
       type: Number,
       required: true,
     },
@@ -38,14 +30,11 @@ const treeSchema = new Schema({
     type: String,
     required: true,
   },
-  registerNumber: {
-    type: String,
-    required: true,
-  },
-  trunkDiameter: {
-    type: Number,
-    required: true,
-  },
+  // registerNumber: {
+  //   type: String,
+  //   required: true,
+  // },
+  // id MondoDB
   crownRadius: {
     type: Number,
     required: true,
@@ -58,16 +47,16 @@ const treeSchema = new Schema({
     type: String,
     required: true,
   },
-  frequencyWatering: {
+  periodicityWatering: {
     type: Number,
-    required: true,
+    // required: true,
   },
   lastWatering: {
-    type: Number,
-    required: true,
+    type: Date,
+    // required: true,
   },
   listVaccination: {
-    type: Number,
+    type: Array,
     required: true,
   },
 });

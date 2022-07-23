@@ -27,25 +27,38 @@ module.exports.infotree = async function (req, res) {
 
 module.exports.create = async function (req, res) {
   console.log("Server create");
-  console.log(req.file);
-  console.log(req.body);
+  // console.log(req.file);
+  // console.log(req.body);
   try {
+    const treeType = Number(req.body.treeType);
+    const coordinates = req.body.coordinates.split(",");
+    coordinates[0] = Number(coordinates[0]);
+    coordinates[1] = Number(coordinates[1]); // Координати дерева на карті
+
+    const age = Number(req.body.age);
+
+    const trunkDiameter = Number(req.body.trunkDiameter);
+    const crownRadius = Number(req.body.crownRadius);
+    const periodicityWatering = Number(req.body.periodicityWatering);
+    const lastWatering = new Date(0);
+
     const newTree = new Tree({
-      imgSrc: "",
-      treeSpecies: req.body.treeSpecies, //
-      addres: req.body.addres, //
-      coordinates: req.body.coordinates, //
-      leafShape: req.body.leafShape, //
-      registerNumber: req.body.registerNumber, //
-      trunkDiameter: req.body.trunkDiameter, //
-      crownRadius: req.body.crownRadius, //
-      age: req.body.age, //
-      state: req.body.state, //
-      frequencyWatering: req.body.frequencyWatering, //
-      lastWatering: req.body.lastWatering, //
-      listVaccination: req.body.listVaccination, //
+      imgSrc: req.file.path,
+      treeType,
+      addres: req.body.addres,
+      coordinates,
+      leafShape: req.body.leafShape,
+      // registerNumber: req.body.registerNumber, // id Mongo
+      trunkDiameter,
+      crownRadius,
+      age,
+      state: req.body.state,
+      // periodicityWatering, //
+      // lastWatering:, //
+      listVaccination: req.body.listVaccination ? req.body.listVaccination : "",
     });
-    console.log(newTree);
+
+    newTree.save();
     res.status(201).json({ message: "Успішно збережено." });
   } catch (error) {
     console.log(error);

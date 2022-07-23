@@ -9,21 +9,21 @@ router.get("/location", controller.location);
 router.get("/:paramID", controller.infotree);
 
 router.post(
-  "/create",
-  //   pasport.authenticate("jwt", { session: false }),
-  upload.single("image"),
+  "/",
+  pasport.authenticate("jwt", { session: false }),
+  upload.single("imgSrc"),
   controller.create
 );
 
 router.patch(
-  "/updating",
+  "/",
   pasport.authenticate("jwt", { session: false }),
-  upload.single("image"),
+  upload.single("imgSrc"),
   controller.updating
 );
 
 router.delete(
-  "/delete",
+  "/",
   pasport.authenticate("jwt", { session: false }),
   controller.delete
 );
