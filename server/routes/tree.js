@@ -11,7 +11,7 @@ router.get("/:paramID", controller.infotree);
 router.post(
   "/create",
   pasport.authenticate("jwt", { session: false }),
-  //   upload.single("image"),
+  upload.single("image"),
   controller.create
 );
 
