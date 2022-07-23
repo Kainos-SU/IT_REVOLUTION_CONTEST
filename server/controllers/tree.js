@@ -1,6 +1,7 @@
 const User = require("../models/User"); // Model User
 const keys = require("../config/keys"); // Secret key
 const Tree = require("../models/Tree"); // Model Tree
+const jwt_decode = require("jwt-decode");
 const fs = require("fs");
 
 module.exports.location = async function (req, res) {
@@ -115,19 +116,20 @@ module.exports.updating = async function (req, res) {
 };
 
 module.exports.delete = async function (req, res) {
+  console.log("Server delete");
   try {
-    console.log(req.body._id);
+    const userDecodeToken = jwt_decode(req.headers.authorization);
 
-    const user = await User.findById(req.body._id);
-    console.log(user);
+    const user = await User.findById(userDecodeToken.userId);
+    console.log(req.params.treeDeleteId);
 
     if (user) {
-      console.log("перший if");
       if (user.role >= 2) {
-        console.log("другий if");
-        Tree.findByIdAndDelete(req.body._id);
+        const tree = await Tree.findById(req.params.treeDeleteId);
+        console.log(tree);
+        await Tree.findByIdAndRemove({ _id: req.params.treeDeleteId });
         res.status(200).json({ message: "Видалено успішно" });
-      } else if (user < 1) {
+      } else if (user.role <= 1) {
         res.status(403).json({
           message: "У вас не достатньо прав для видалення інформації.",
         });

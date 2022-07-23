@@ -23,7 +23,7 @@ router.patch(
 );
 
 router.delete(
-  "/",
+  "/:treeDeleteId",
   // pasport.authenticate("jwt", { session: false }),
   controller.delete
 );
