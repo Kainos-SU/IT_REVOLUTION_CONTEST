@@ -11,12 +11,29 @@ module.exports.location = async function (req, res) {
     const rbx = Number(req.query.rbx);
     const rby = Number(req.query.rby);
 
-    // console.log(49.234851, "X", 28.458206, "Y");
-    // console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
+    console.log(49.234851, "X", 28.458206, "Y");
+    console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
 
-    const candidate = await Tree.find({
-      coordinatesX: { $lt: ltx, $gt: rbx },
-      coordinatesY: { $gt: lty, $lt: rby },
+    // $eq (равно)
+    // $ne (не равно)
+    // $gt (больше чем)
+    // $lt (меньше чем)
+    // $gte (больше или равно)
+    // $lte (меньше или равно)
+
+    const candidateDB = await Tree.find({
+      coordinatesX: { $lt: ltx, $gt: rbx }, // localhost
+      coordinatesY: { $gt: lty, $lt: rby }, // localhost
+    });
+    let candidate = [];
+
+    candidateDB.forEach((item) => {
+      candidate.push({
+        _id: item._id,
+        crownRadius: item.crownRadius,
+        coordinatesX: item.coordinatesX,
+        coordinatesY: item.coordinatesY,
+      });
     });
 
     res.status(200).json(candidate);
@@ -46,6 +63,7 @@ module.exports.infotree = async function (req, res) {
 
 module.exports.create = async function (req, res) {
   console.log("Server create");
+  console.log(req.body._id);
   try {
     const treeType = Number(req.body.treeType);
     const coordinates = req.body.coordinates.split(",");
