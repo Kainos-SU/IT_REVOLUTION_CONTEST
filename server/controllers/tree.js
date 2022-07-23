@@ -5,35 +5,21 @@ const fs = require("fs");
 
 module.exports.location = async function (req, res) {
   console.log("Server location");
-  console.log(req.query);
-
-  const ltx = Number(req.query.ltx); // 0
-  const lty = Number(req.query.lty); // 0
-  const rbx = Number(req.query.rbx); // 10
-  const rby = Number(req.query.rby); // 10
-
-  // $gt (больше чем)
-
-  // $lt (меньше чем)
-
-  // $gte (больше или равно)
-
-  // $lte (меньше или равно)
-
-  console.log(49.234851, "X", 28.458206, "Y");
-  // console.log();
-
-  console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
-
-  const candidate = await Tree.find({
-    coordinatesX: { $lt: ltx, $gt: rbx },
-    coordinatesY: { $gt: lty, $lt: rby },
-  });
-
-  console.log(candidate);
-
-  res.status(200).json({ message: "Успішно" });
   try {
+    const ltx = Number(req.query.ltx);
+    const lty = Number(req.query.lty);
+    const rbx = Number(req.query.rbx);
+    const rby = Number(req.query.rby);
+
+    // console.log(49.234851, "X", 28.458206, "Y");
+    // console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
+
+    const candidate = await Tree.find({
+      coordinatesX: { $lt: ltx, $gt: rbx },
+      coordinatesY: { $gt: lty, $lt: rby },
+    });
+
+    res.status(200).json(candidate);
   } catch (error) {
     console.log(error);
     res
@@ -43,7 +29,13 @@ module.exports.location = async function (req, res) {
 };
 
 module.exports.infotree = async function (req, res) {
+  console.log("Server infotree");
   try {
+    const treeID = req.params.paramID;
+
+    const tree = await Tree.findById(treeID); // Пошук в бд дерева по id
+
+    res.status(200).json(tree);
   } catch (error) {
     console.log(error);
     res
@@ -54,7 +46,6 @@ module.exports.infotree = async function (req, res) {
 
 module.exports.create = async function (req, res) {
   console.log("Server create");
-
   try {
     const treeType = Number(req.body.treeType);
     const coordinates = req.body.coordinates.split(",");
