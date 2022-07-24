@@ -85,7 +85,7 @@ module.exports.create = async function (req, res) {
       age,
       state: req.body.state,
       periodicityWatering: periodicityWatering ? periodicityWatering : 7,
-      lastWatering: req.body.lastWatering,
+      lastWatering: req.body.lastWatering ? req.body.lastWatering : "",
       listVaccination: req.body.listVaccination ? req.body.listVaccination : "",
     });
 
