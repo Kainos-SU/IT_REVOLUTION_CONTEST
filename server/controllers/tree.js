@@ -78,7 +78,7 @@ module.exports.create = async function (req, res) {
     const lastWatering = new Date(0);
 
     const newTree = new Tree({
-      imgSrc: req.file.path,
+      imgSrc: "", // Не обов'язкове поле. default ""
       treeType: req.body.treeType,
       addres: req.body.addres,
       coordinatesX,
@@ -93,6 +93,10 @@ module.exports.create = async function (req, res) {
       // lastWatering:, //
       listVaccination: req.body.listVaccination ? req.body.listVaccination : "",
     });
+
+    if (req.file) {
+      newTree.imgSrc = req.file.path;
+    }
 
     newTree.save();
     res.status(201).json({ message: "Успішно збережено." });
