@@ -64,7 +64,6 @@ module.exports.infotree = async function (req, res) {
 
 module.exports.create = async function (req, res) {
   console.log("Server create");
-  // console.log(req.body._id);
   try {
     const treeType = Number(req.body.treeType);
     const coordinates = req.body.coordinates.split(",");
@@ -80,7 +79,7 @@ module.exports.create = async function (req, res) {
 
     const newTree = new Tree({
       imgSrc: req.file.path,
-      treeType,
+      treeType: treeType,
       addres: req.body.addres,
       coordinatesX,
       coordinatesY,
