@@ -10,53 +10,44 @@
       </div>
       <ul class="map-popup__info">
         <li>
-          {{ text.name }}
+          {{ store.getters.getTree?._id }}
         </li>
         <li>
-          {{ text.address }}
+          {{ store.getters.getTree?.addres }}
         </li>
         <li>
-          {{ text.state }}
+          {{ store.getters.getTree?.state }}
         </li>
-        <li>{{ text.img }}</li>
       </ul>
     </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, nextTick } from "vue";
 import useMap from "../composable/useMap";
+import treeApi from "../api/treeApi.js";
+import { useStore } from "vuex";
+// console.log(treeApi);
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const store = useStore();
 
 const updateTreesList = (topRight, bottomLeft) => {
-  console.log(topRight, bottomLeft);
-  fetch(
-    `${apiUrl}/api/tree/location?ltx=${topRight.lat}&lty=${bottomLeft.lng}&rbx=${bottomLeft.lat}&rby=${topRight.lng}`
-  )
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json);
-      trees.value = json;
-    })
-    .catch((error) => console.error(error));
+  treeApi.getTreesFromView({topRightLat: topRight.lat, topRightLng: topRight.lng, bottomLeftLat: bottomLeft.lat, bottomLeftLng: bottomLeft.lng})
+  .then(response => {
+    trees.value = response.data;
+  })
+  .catch(error => console.error(error))
 };
 
 const form = ref(null);
 const map = ref(null);
 const trees = ref([]);
 
-const getTree = (id) => {
-  return fetch(`${apiUrl}/api/tree/${id}`)
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json);
-      text.address = json.addres;
-      text.state = json.state;
-      text.img = json.imgSrc;
-    })
-    .catch((error) => console.error(error));
+const getTree = async (id) => {
+  console.log("get tree");
+  await store.dispatch("fetchCurrentTree", id);
+  return nextTick();
 };
 
 const addNewTree = (lan, lng) => console.log("test", lan, lng);
@@ -64,19 +55,14 @@ const addNewTree = (lan, lng) => console.log("test", lan, lng);
 const getPopupContent = async () => {
   if (!text.isEmpty) {
     await getTree(text.name);
+    console.log("store", store.getters.getTree._id)
   }
   return form.value.cloneNode(true);
 };
 
 const text = useMap(map, trees, updateTreesList, getPopupContent, addNewTree);
 
-const image = computed(() => {
-  if (!text.img) {
-    return "#";
-  }
-  const url = new URL(text.img, apiUrl);
-  return url.toString();
-});
+const image = computed(() => store.getters.getCurrentTreeImage);
 </script>
 
 <style scoped lang="scss">

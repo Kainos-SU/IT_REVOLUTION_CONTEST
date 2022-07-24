@@ -3,9 +3,9 @@
     <div class="container">
       <div class="header__wrapper">
         <h1 class="header__title">Green City Project</h1>
-        <button class="header__login-logout-button" @click="tougleAuthorization">
-          <template v-if="!authorized"> LogIn </template>
-          <template v-else> LogOut </template>
+        <button class="header__login-logout-button" @click="toggleAuthorization">
+          <template v-if="store.getters.isAuthorized"> LogOut </template>
+          <template v-else> LogIn </template>
         </button>
       </div>
     </div>
@@ -20,12 +20,19 @@
 <script setup>
 import { ref, computed } from "vue";
 import Map from "../components/Map.vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-const auth = ref(true);
+const router = useRouter();
+const store = useStore();
 
-const tougleAuthorization = () => auth.value = !auth.value;
-
-const authorized = computed(() => auth.value);
+const toggleAuthorization = () => {
+    if (store.getters.isAuthorized) {
+        store.dispatch("logout");
+        return;
+    }
+    router.push("/login")
+}
 </script>
 
 <style scoped lang="scss">
