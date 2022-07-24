@@ -32,7 +32,9 @@ import useMap from "../composable/useMap";
 import treeApi from "../api/treeApi.js";
 import { useStore } from "vuex";
 import {useRouter} from "vue-router";
-import router from "../router";
+
+
+const router = useRouter();
 
 const store = useStore();
 
