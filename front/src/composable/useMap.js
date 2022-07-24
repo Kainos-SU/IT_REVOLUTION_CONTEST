@@ -10,10 +10,9 @@ const useMap = (
 ) => {
   const text = reactive({
     isEmpty: true,
-    name: "",
-    address: "",
-    state: "",
-    img: ""
+    id: "",
+    lat: 0,
+    lng: 0,
   });
 
   onMounted(() => {
@@ -44,7 +43,7 @@ const useMap = (
       console.log(event.latlng);
       const { lat, lng } = event.latlng;
       text.isEmpty = true;
-      text.lan = lat;
+      text.lat = lat;
       text.lng = lng;
       const popup = Leaflet.popup();
       nextTick(async () => {
@@ -75,10 +74,7 @@ const useMap = (
           circle.on("click", (event) => {
             console.log(tree);
             text.isEmpty = false;
-            text.name = tree._id;
-            text.address = tree.addres;
-            text.state = tree.state;
-            text.img = tree.imgSrc;
+            text.id = tree._id;
             const popup = Leaflet.popup();
             nextTick(async () => {
               const content = await getPopupContent();

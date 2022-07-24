@@ -4,7 +4,6 @@
 import {RouterView} from "vue-router"
 import { useStore } from 'vuex';
 const store = useStore();
-console.log(store);
 store.dispatch("initUser");
 </script>
 

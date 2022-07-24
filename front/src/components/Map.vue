@@ -10,13 +10,16 @@
       </div>
       <ul class="map-popup__info">
         <li>
-          {{ store.getters.getTree?._id }}
+          {{ store.getters.getTree?.treeType }}
         </li>
         <li>
           {{ store.getters.getTree?.addres }}
         </li>
         <li>
           {{ store.getters.getTree?.state }}
+        </li>
+        <li>
+          <router-link :to="`/edit/${store.getters.getTree?._id}`" >Edit</router-link>
         </li>
       </ul>
     </template>
@@ -28,7 +31,8 @@ import { ref, computed, nextTick } from "vue";
 import useMap from "../composable/useMap";
 import treeApi from "../api/treeApi.js";
 import { useStore } from "vuex";
-// console.log(treeApi);
+import {useRouter} from "vue-router";
+import router from "../router";
 
 const store = useStore();
 
@@ -50,11 +54,14 @@ const getTree = async (id) => {
   return nextTick();
 };
 
-const addNewTree = (lan, lng) => console.log("test", lan, lng);
+const addNewTree = (lat, lng) => {
+  router.push(`/add?lat=${lat}&lng=${lng}`)
+};
 
 const getPopupContent = async () => {
+  // debugger
   if (!text.isEmpty) {
-    await getTree(text.name);
+    await getTree(text.id);
     console.log("store", store.getters.getTree._id)
   }
   return form.value.cloneNode(true);

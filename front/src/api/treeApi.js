@@ -28,7 +28,7 @@ export default {
   /**
    * Create new tree
    * coordinates field is both coordinates separated by coma
-   * @param {{treeType: string, imgSrc: binary, coordinates: string, age: string, trunkDiameter: string, crownRadius: string, leafShape: string, state: string, addres: string}} data
+   * @param {{treeType: string, imgSrc: binary, coordinates: string, age: string, crownRadius: string, leafShape: string, state: string, addres: string}} data
    */
   addTree(data) {
     return api.post("/api/tree/", data);
@@ -37,10 +37,10 @@ export default {
   /**
    * Change tree data
    * coordinates field is both coordinates separated by coma
-   * @param {{treeType: string, imgSrc: binary, coordinates: string, age: string, trunkDiameter: string, crownRadius: string, leafShape: string, state: string, addres: string}} data
+   * @param {{id: string, form: {treeType: string, imgSrc: binary, coordinates: string, age: string, crownRadius: string, leafShape: string, state: string, addres: string}}} data
    */
   updateTree(data) {
-    return api.patch("/api/tree/", data);
+    return api.patch(`/api/tree/${data.id}`, data.form);
   },
 
   /**
