@@ -48,7 +48,7 @@ const treeSchema = new Schema({
     // required: true,
   },
   lastWatering: {
-    type: Date,
+    type: String,
     // required: true,
   },
   listVaccination: {

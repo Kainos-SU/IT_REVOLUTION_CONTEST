@@ -12,15 +12,9 @@ module.exports.location = async function (req, res) {
     const rbx = Number(req.query.rbx);
     const rby = Number(req.query.rby);
 
-    console.log(49.234851, "X", 28.458206, "Y");
-    console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y");
-
-    // $eq (дорівнює)
-    // $ne (не дорівнює)
+    console.log(ltx, "X", lty, "Y", rbx, "X", rby, "Y"); // Діапазон пошуку
     // $gt (більше за)
     // $lt (меньше за)
-    // $gte (більше або рівне)
-    // $lte (меньше або рівне)
 
     const candidateDB = await Tree.find({
       coordinatesX: { $lt: ltx, $gt: rbx }, // localhost
@@ -65,17 +59,18 @@ module.exports.infotree = async function (req, res) {
 module.exports.create = async function (req, res) {
   console.log("Server create");
   try {
-    // const treeType = req.body.treeType;
     const coordinates = req.body.coordinates.split(",");
     const coordinatesX = Number(coordinates[0]);
     const coordinatesY = Number(coordinates[1]); // Координати дерева на карті
-
     const age = Number(req.body.age);
-
     const trunkDiameter = Number(req.body.trunkDiameter);
     const crownRadius = Number(req.body.crownRadius);
-    const periodicityWatering = Number(req.body.periodicityWatering);
-    const lastWatering = new Date(0);
+
+    let periodicityWatering;
+    if (req.body.periodicityWatering) {
+      periodicityWatering = Number(req.body.periodicityWatering);
+    }
+    // const lastWatering = new Date(0);
 
     const newTree = new Tree({
       imgSrc: "", // Не обов'язкове поле. default ""
@@ -89,8 +84,8 @@ module.exports.create = async function (req, res) {
       crownRadius,
       age,
       state: req.body.state,
-      // periodicityWatering, //
-      // lastWatering:, //
+      periodicityWatering: periodicityWatering ? periodicityWatering : 7,
+      lastWatering: req.body.lastWatering,
       listVaccination: req.body.listVaccination ? req.body.listVaccination : "",
     });
 
