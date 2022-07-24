@@ -65,7 +65,7 @@ module.exports.infotree = async function (req, res) {
 module.exports.create = async function (req, res) {
   console.log("Server create");
   try {
-    const treeType = Number(req.body.treeType);
+    // const treeType = req.body.treeType;
     const coordinates = req.body.coordinates.split(",");
     const coordinatesX = Number(coordinates[0]);
     const coordinatesY = Number(coordinates[1]); // Координати дерева на карті
@@ -79,7 +79,7 @@ module.exports.create = async function (req, res) {
 
     const newTree = new Tree({
       imgSrc: req.file.path,
-      treeType,
+      treeType: req.body.treeType,
       addres: req.body.addres,
       coordinatesX,
       coordinatesY,
