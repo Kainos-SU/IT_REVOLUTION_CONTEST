@@ -16,7 +16,7 @@ router.post(
 );
 
 router.patch(
-  "/",
+  "/:treeUpdatingId",
   // pasport.authenticate("jwt", { session: false }),
   upload.single("imgSrc"),
   controller.updating

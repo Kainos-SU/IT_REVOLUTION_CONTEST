@@ -106,7 +106,37 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.updating = async function (req, res) {
+  console.log("Server updating");
   try {
+    console.log(req.body);
+    const user = await decodeJWT(req.headers.authorization);
+    if (user) {
+      if (user.role >= 1) {
+        let updated = {}; // Змінення які ми вносимо.
+        updated = req.body; // Змінення які прийшли з серверу.
+
+        if (req.file) {
+          updated.imgSrc = req.file.path;
+
+          // Видалення старого фото
+          const treeUp = await Tree.findById(req.params.treeUpdatingId);
+
+          const deleteImgSrc = treeUp.imgSrc; // Фото яке потрібно видалити
+
+          if (deleteImgSrc !== "") {
+            await deleteImg(deleteImgSrc);
+          } // Видалення старго фото якщо воно було.
+        } // При умові що є файл для оновлення
+
+        const tree = await Tree.findOneAndUpdate(
+          { _id: req.params.treeUpdatingId },
+          { $set: updated },
+          { new: true }
+        );
+
+        res.status(200).json({ message: "Змінення успішно внесені." });
+      }
+    }
   } catch (error) {
     console.log(error);
     res
@@ -146,3 +176,14 @@ module.exports.delete = async function (req, res) {
       .json({ message: "Сталася помилка на серверові. Спробуйте пізніше." });
   }
 };
+
+async function decodeJWT(token) {
+  const userDecodeToken = jwt_decode(token);
+  const user = await User.findById(userDecodeToken.userId);
+  return user;
+}
+
+async function deleteImg(linkImg) {
+  fs.unlinkSync(linkImg);
+  console.log(`Delet file ${linkImg}`);
+}
