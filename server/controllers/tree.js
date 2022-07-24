@@ -79,7 +79,7 @@ module.exports.create = async function (req, res) {
 
     const newTree = new Tree({
       imgSrc: req.file.path,
-      treeType: treeType,
+      treeType,
       addres: req.body.addres,
       coordinatesX,
       coordinatesY,
